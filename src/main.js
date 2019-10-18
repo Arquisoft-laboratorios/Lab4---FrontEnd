@@ -3,7 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
 
+const base = axios.create({
+  baseURL: 'http://3.130.145.129:3000/courses-ms/resources/courses/'
+})
+
+Vue.prototype.$http = base
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

@@ -1,18 +1,7 @@
 <template>
   <div class="hello">
-    <div>
-      <h2>Ingrese el nombre del curso</h2>
-      <input v-model="messageCurso" placeholder="Nombre del curso">
-      <h2>Ingrese los creditos del curso</h2>
-      <input v-model="messageCreditos" placeholder="Créditos">
-    </div>
-    <div>
-      <button id="rest">REST</button>
-      <button id="graphql">GRAPHQL</button>
-    </div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'HelloWorld',
