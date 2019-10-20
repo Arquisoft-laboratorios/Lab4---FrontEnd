@@ -4,53 +4,65 @@
     <router-view/>
     <div>
       <h2>Ingrese el nombre del curso</h2>
-      <input type="text" v-model="name" placeholder="Ingrese el nombre del curso"/>
+      <input type="text" v-model="name" placeholder="Nombre del curso"/>
       <h2>Ingrese los creditos del curso</h2>
       <input type="text" v-model="credits" placeholder="Creditos"/>
     </div>
     <div>
-      <input type="button" @click="createPost()" value="REST">
-      <!--
-      <ul v-if="posts && posts.length">
-        <li v-for="post of posts" v-bind:key="post.id">
-          <p><strong>{{post.name}}</strong></p>
-          <p>{{post.credits}}</p>
-        </li>
-      </ul>
-      -->
-      <button id="graphql">GRAPHQL</button>
+      <input type="button" @click="createCourseRest(name, credits)" value="REST">
+      <input type="button" @click="createCourse(name, credits)" value="GraphQL">
     </div>
   </div>
 </template>
 
 <script>
+import gql from 'graphql-tag'
+import axios from 'axios'
 
 export default {
-  name: 'App',
   data () {
     return {
-      name: null,
-      credits: null,
-      posts: []
+      course: {
+        name: null,
+        credits: null
+      }
     }
   },
-  created () {
-    this.$http.get('').then((response) => {
-      this.posts = response.data
-    })
-      .catch((e) => {
-        console.error(e)
-      })
+  name: 'app',
+  apollo: {
+    allCourses: gql`query {
+      allCourses {
+        name,
+        credits
+      }
+    }`
   },
   methods: {
-    createPost () {
-      this.$http.post('', {
-        name: this.name,
-        credits: this.credits
-      }).then((response) => {})
-        .catch((e) => {
-          console.error(e)
-        })
+    createCourse (name, credits) {
+      this.$apollo.mutate({
+        mutation: gql`mutation ($name: String!, $credits: Int!) {
+          createCourse(course: {name: $name, credits: $credits}) {
+            name
+            credits
+          }
+        }`,
+        variables: {
+          name: name,
+          credits: credits
+        }
+      })
+      alert('Course created successfully (from GraphQL) -> name: ' + name + ', credits: ' + credits)
+    },
+    createCourseRest (name, credits) {
+      axios({
+        method: 'post',
+        url: 'http://3.130.145.129:3000/courses-ms/resources/courses',
+        data: {
+          name: name,
+          credits: credits
+        }
+      })
+      alert('Course created successfully (from Microservice) -> name: ' + name + ', credits: ' + credits)
     }
   }
 }

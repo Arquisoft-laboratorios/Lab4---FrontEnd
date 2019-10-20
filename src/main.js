@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import { apolloProvider } from './graphql/apollo'
 
 const base = axios.create({
   baseURL: 'http://3.130.145.129:3000/courses-ms/resources/courses/'
@@ -17,5 +18,7 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  apolloProvider,
+  render: h => h(App)
 })

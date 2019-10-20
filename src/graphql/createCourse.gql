@@ -1,0 +1,7 @@
+import createCourse from './graphql/createCourse.gql'
+mutation createCourse($name: String!, $credits: Int!) {
+    createCourse(course: {name: $name, credits: $credits}) {
+        name
+        credits
+    }
+}
